@@ -18,7 +18,7 @@ const DevicePage =() => {
     const [channelSubscribers, setChannelSubscribers] = useState('');
     const [channelUsername, setChannelUsername] = useState('');
   
-    const telegramApiKey = '6039392539:AAHJtUVAJGxMTiTIeitGNiB4nQfuYrTcy8w';
+    const telegramApiKey = process.env.REACT_APP_TELEGRAM_KEY;
   
     useEffect(() => {
       fetch(apiUrl)
@@ -75,27 +75,32 @@ const DevicePage =() => {
     return (
     <Container className='mt-3'>
         <Row>
-            <Col md={4}>
-                <Image wigth={300} height={300} src={process.env.REACT_APP_API_URL + device.img}/>
-            </Col>
+          <Col md={4}>
+            <Image width={300} height={300} src={process.env.REACT_APP_API_URL + device.img} />
+          </Col>
         </Row>
         <Row className='d-flex flex-column m-3'>
-            <h1>Опис каналу</h1>
-            {device.info.map((info, index) =>
-                <Row key={info.id} style={{background: index % 2 === 0 ? "lightgray" : 'transparent', padding: 10}}>
-                    {info.title}: {info.description}
-                </Row>  
-            )}
-            <div>
-                <h1>-------------------------------------</h1>
-      <h1>{channelName}</h1>
-      <p>{channelDescription}</p>
-      <img src={channelImageLink} alt="Channel Image" width="200" />
-      <a href={channelLink} target="_blank" rel="noopener noreferrer">{channelLink}</a>
-      <p>Subscribers: {channelSubscribers}</p>
-    </div>
+          <h2>About the Channel</h2>
+          {device.info.map((info, index) =>
+            <Row key={info.id} style={{ background: index % 2 === 0 ? "lightgray" : 'transparent', padding: 10 }}>
+              <Col md={4}><strong>{info.title}:</strong></Col>
+              <Col md={8}>{info.description}</Col>
+            </Row>
+          )}
+          <div className='channel-info'>
+            <h2>Channel Information</h2>
+            <div className='channel-image'>
+              <img src={channelImageLink} alt="Channel Image" />
+            </div>
+            <div className='channel-details'>
+              <h3>{channelName}</h3>
+              <p>{channelDescription}</p>
+              <p><strong>Link:</strong> <a href={channelLink} target="_blank" rel="noopener noreferrer">{channelLink}</a></p>
+              <p><strong>Subscribers:</strong> {channelSubscribers}</p>
+            </div>
+          </div>
         </Row>
-    </Container>
+      </Container>
     );
 };
 
