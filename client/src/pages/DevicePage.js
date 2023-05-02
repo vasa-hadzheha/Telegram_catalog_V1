@@ -74,7 +74,7 @@ const DevicePage =() => {
 
     return (
     <Container className='mt-3'>
-        <Row>
+        {/* <Row>
           <Col md={4}>
             <Image width={300} height={300} src={process.env.REACT_APP_API_URL + device.img} />
           </Col>
@@ -86,20 +86,28 @@ const DevicePage =() => {
               <Col md={4}><strong>{info.title}:</strong></Col>
               <Col md={8}>{info.description}</Col>
             </Row>
-          )}
-          <div className='channel-info'>
-            <h2>Channel Information</h2>
-            <div className='channel-image'>
-              <img src={channelImageLink} alt="Channel Image" />
-            </div>
-            <div className='channel-details'>
-              <h3>{channelName}</h3>
-              <p>{channelDescription}</p>
-              <p><strong>Link:</strong> <a href={channelLink} target="_blank" rel="noopener noreferrer">{channelLink}</a></p>
-              <p><strong>Subscribers:</strong> {channelSubscribers}</p>
-            </div>
+          )} */}
+          <Container className='mt-3'>
+      <Row>
+        <Col md={4}>
+          <Image
+            width={300}
+            height={300}
+            src={channelImageLink}
+            roundedCircle
+          />
+        </Col>
+        <Col md={8} className='d-flex flex-column justify-content-center'>
+          <div className='channel-details'>
+            <h3>{channelName}</h3>
+            <p>{channelDescription}</p>
+            <p><strong>Link:</strong> <a href={channelLink} target="_blank" rel="noopener noreferrer">{channelLink}</a></p>
+            <p><strong>Subscribers:</strong> {channelSubscribers}</p>
           </div>
-        </Row>
+        </Col>
+      </Row>
+    </Container>
+        {/* </Row> */}
       </Container>
     );
 };
