@@ -51,6 +51,26 @@ class DeviceController {
         return res.json(devices)
     }
 
+    async getAllNoLimit(req, res) {
+        let { brandId, typeId } = req.query;
+        
+        let devices;
+        if (!brandId && !typeId) {
+          devices = await Device.findAll();
+        }
+        if (brandId && !typeId) {
+          devices = await Device.findAll({ where: { brandId } });
+        }
+        if (!brandId && typeId) {
+          devices = await Device.findAll({ where: { typeId } });
+        }
+        if (brandId && typeId) {
+          devices = await Device.findAll({ where: { typeId, brandId } });
+        }
+      
+        return res.json(devices);
+      }
+
     async getOne(req, res){
         const {id} = req.params
         const device = await Device.findOne (
@@ -61,6 +81,61 @@ class DeviceController {
         )
             return res.json(device)  
     }
+
+    async update(req, res, next) {
+        try {
+          const { id } = req.params;
+          const { name, price, info } = req.body;
+      
+          // Check if device with given id exists
+          const device = await Device.findOne({ where: { id } });
+          if (!device) {
+            return res.status(404).json({ message: "Device not found" });
+          }
+      
+          // Update device's name and price
+          device.name = name;
+          device.price = price;
+      
+          // Update device info records
+          if (info) {
+            await Promise.all(
+              info.map(async i => {
+                const deviceInfo = await DeviceInfo.findOne({ where: { id: i.id, deviceId: id } });
+                if (deviceInfo) {
+                  deviceInfo.title = i.title;
+                  deviceInfo.description = i.description;
+                  await deviceInfo.save();
+                }
+              })
+            );
+          }
+      
+          // Save the updated device
+          await device.save();
+      
+          return res.json(device);
+        } catch (e) {
+          next(ApiError.badRequest(e.message));
+        }
+      }
+    
+      async delete(req, res, next) {
+        try {
+          const { id } = req.params;
+    
+          const device = await Device.findByPk(id);
+          if (!device) {
+            throw ApiError.notFound(`Device with id ${id} was not found.`);
+          }
+    
+          await device.destroy();
+    
+          return res.json({ message: `Device with id ${id} was deleted.` });
+        } catch (e) {
+          next(ApiError.badRequest(e.message));
+        }
+      }
 }
 
 module.exports = new DeviceController()
