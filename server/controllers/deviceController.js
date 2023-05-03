@@ -85,7 +85,7 @@ class DeviceController {
     async update(req, res, next) {
         try {
           const { id } = req.params;
-          const { name, price, info } = req.body;
+          const { name, info } = req.body;
       
           // Check if device with given id exists
           const device = await Device.findOne({ where: { id } });
@@ -93,9 +93,8 @@ class DeviceController {
             return res.status(404).json({ message: "Device not found" });
           }
       
-          // Update device's name and price
+          // Update device's name
           device.name = name;
-          device.price = price;
       
           // Update device info records
           if (info) {
