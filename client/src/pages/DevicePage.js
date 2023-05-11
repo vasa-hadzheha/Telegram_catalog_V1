@@ -1,8 +1,23 @@
-import React, { useEffect, useState } from 'react';
-import { Col, Container, Image, Row } from 'react-bootstrap';
+import React, { useEffect, useState, useContext } from 'react';
+import { Col, Container, Image, Row, Button } from 'react-bootstrap';
 import {useParams} from 'react-router-dom'
 import { fetchOneDevice } from '../http/deviceAPI';
+import { Context } from '../index';
+import DeleteDevice from '../components/modals/UpdateAndDeleteDevice';
+
 const DevicePage =() => {
+  const {user} = useContext(Context)
+  const [deviceToDelete, setDeviceToDelete] = useState(null); // New state variable for device deletion
+
+  const handleDeleteDevice = (deviceId) => {
+      // Implement the logic to delete the device with the given ID
+      // ...
+  };
+  const handleDelete = () => {
+      console.log('Delete button clicked!');
+      // code to handle deletion
+    }
+
   const [device, setDevice] = useState({info:[]})
   const {id} = useParams()
     useEffect( () => {
@@ -108,6 +123,28 @@ const DevicePage =() => {
       </Row>
     </Container>
         {/* </Row> */}
+        {/* Add button to open the delete device modal */}
+        {user.user.role === "ADMIN" ?
+                         <Button 
+                         variant={"outline-danger"} 
+                         className="mt-4 p-2"
+                         onClick={() => setDeviceToDelete(true)}
+                     > 
+                         Delete Device
+                     </Button>
+                        :
+                        <div></div>    
+                    }
+
+            {/* Pass the selected device, onDelete function, and onHide function to the delete device modal */}
+            {deviceToDelete && (
+                <DeleteDevice
+                    show={true}
+                    onHide={() => setDeviceToDelete(null)}
+                    device={deviceToDelete}
+                    onDelete={handleDeleteDevice}
+                />
+            )}
       </Container>
     );
 };

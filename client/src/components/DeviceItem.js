@@ -72,16 +72,26 @@ const DeviceItem = ({device}) => {
       console.log("channelUsername="+channelUsername)
 
     return (
-        <Col md={3} className="mt-4 d-flex" onClick={()=> history(DEVICE_ROUTE + '/' + device.id)}>
-            <Card style={{width: 150, cursor:"pointer"}} border={"light"}>
-                <Image width={150} heigh={150} src={channelImageLink}/>
-                <div className="text-black-50 d-flex justify-content-between align-items-center">
-                    <div> </div>
+        // <Col md={3} className="mt-4 d-flex" onClick={()=> history(DEVICE_ROUTE + '/' + device.id)}>
+        //     <Card style={{width: 150, cursor:"pointer"}} border={"light"}>
+        //         <Image width={150} heigh={150} src={channelImageLink}/>
+        //         <div className="text-black-50 d-flex justify-content-between align-items-center">
+        //             <div> </div>
 
-                </div>
-                <div>{channelName}</div>
-            </Card>
-        </Col>
+        //         </div>
+        //         <div>{channelName}</div>
+        //     </Card>
+        // </Col>
+        <Col md={3} className="mt-4 d-flex" onClick={()=> history(DEVICE_ROUTE + '/' + device.id)}>
+        <Card style={{width: 150, cursor:"pointer"}} border={"light"}>
+            <Image width={150} heigh={150} src={process.env.REACT_APP_API_URL + device.img}/>
+            <div className="text-black-50 d-flex justify-content-between align-items-center">
+                <div> </div>
+
+            </div>
+            <div>{device.name}</div>
+        </Card>
+    </Col>
     );
 };
 
